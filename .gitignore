@@ -6,7 +6,8 @@ __pycache__/
 Backend/venv/
 
 # Node
-frontend/node_modules/
+node_modules/
+**/node_modules/
 frontend/build/
 .pnp
 .pnp.js
@@ -16,5 +17,4 @@ frontend/build/
 .env
 .env.local
 .git/
-# Inside frontend
-frontend/.git/
+**/.git/
