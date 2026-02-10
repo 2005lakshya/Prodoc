@@ -1,0 +1,5 @@
+CONFIDENCE_THRESHOLDS = {
+    "VERY_LOW": 0.15,
+    "LOW": 0.30
+}
+

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>PRODOC – AI Contract Review</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f7f7f7;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+    .container {
+      display: flex;
+      gap: 20px;
+    }
+    .panel {
+      background: #ffffff;
+      padding: 15px;
+      border-radius: 6px;
+      width: 50%;
+      overflow-y: auto;
+      max-height: 70vh;
+    }
+    .highlight {
+      background-color: #ffcccc;
+    }
+    .report {
+      white-space: pre-wrap;
+      font-size: 14px;
+    }
+    button {
+      padding: 8px 12px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>PRODOC – AI-Powered Contract Review</h1>
+
+  <input type="file" id="pdfFile" accept=".pdf" />
+  <br />
+  <button onclick="uploadPDF()">Analyze Contract</button>
+
+  <div class="container" style="margin-top: 20px;">
+    <div class="panel">
+      <h3>Contract Text (Highlighted Risks)</h3>
+      <div id="contractText"></div>
+    </div>
+
+    <div class="panel">
+      <h3>Decision Justification Report</h3>
+      <div id="report" class="report"></div>
+    </div>
+  </div>
+
+  <script>
+    async function uploadPDF() {
+      const fileInput = document.getElementById("pdfFile");
+      if (!fileInput.files.length) {
+        alert("Please select a PDF file");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("file", fileInput.files[0]);
+
+      const response = await fetch("/upload", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+      renderResult(data);
+    }
+
+    function renderResult(data) {
+      let text = "";
+      if (!data.highlights || data.highlights.length === 0) {
+        document.getElementById("contractText").innerText =
+          "No highlighted risks found.";
+      } else {
+        // Combine all highlighted snippets
+        data.highlights.forEach(h => {
+          text += `<p><span class="highlight">${h.text}</span></p>`;
+        });
+        document.getElementById("contractText").innerHTML = text;
+      }
+
+      document.getElementById("report").innerText =
+        `Decision: ${data.decision}\n` +
+        `Risk Score: ${data.risk_score}\n\n` +
+        data.justification_report;
+    }
+  </script>
+
+</body>
+</html>

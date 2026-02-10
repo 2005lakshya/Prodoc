@@ -1,0 +1,20 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+Backend/venv/
+
+# Node
+frontend/node_modules/
+frontend/build/
+.pnp
+.pnp.js
+
+# Misc
+.DS_Store
+.env
+.env.local
+.git/
+# Inside frontend
+frontend/.git/
